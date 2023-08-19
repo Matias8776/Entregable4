@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/realtimeproducts", async (req, res) => {
-    res.render("realtimeproducts", {
+    res.render("realTimeProducts", {
         style: "realTimeProducts.css",
         title: "Ecommerce - Productos en tiempo real",
     });
