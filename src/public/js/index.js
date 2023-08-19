@@ -48,7 +48,6 @@ addForm.addEventListener("submit", async (e) => {
         method: "POST",
         body: formData,
     });
-    console.log(formData);
     addForm.reset();
     socket.emit("addProduct");
 });
