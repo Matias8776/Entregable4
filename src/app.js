@@ -32,8 +32,8 @@ io.on("connection", (socket) => {
         console.log("Cliente desconectado");
     });
 
-    socket.emit("updatedProducts");
-    socket.on("addProduct", () => {
-        io.emit("updatedProducts");
+    socket.emit("server:updatedProducts");
+    socket.on("client:updateProduct", () => {
+        io.emit("server:updatedProducts");
     });
 });

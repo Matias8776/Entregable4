@@ -6,7 +6,7 @@ const deleteForm = document.getElementById("deleteForm");
 
 let form = document.getElementById("addForm");
 
-socket.on("updatedProducts", async () => {
+socket.on("server:updatedProducts", async () => {
     await fetch("/api/products", {
         method: "GET",
     })
@@ -44,12 +44,22 @@ addForm.addEventListener("submit", async (e) => {
     formData.get("status");
     formData.get("thumbnails");
 
-    await fetch("/api/products", {
+    const response = await fetch("/api/products", {
         method: "POST",
         body: formData,
     });
-    addForm.reset();
-    socket.emit("addProduct");
+    const data = await response.json();
+
+    const errorElement = document.getElementById("errorAdd");
+    if (response.status === 200 && data.status === "success") {
+        addForm.reset();
+        socket.emit("client:updateProduct");
+        errorElement.textContent = "";
+    } else if (data.status === "error") {
+        if (errorElement) {
+            errorElement.textContent = data.message;
+        }
+    }
 });
 
 deleteForm.addEventListener("submit", async (e) => {
@@ -57,10 +67,20 @@ deleteForm.addEventListener("submit", async (e) => {
     const formData = new FormData(deleteForm);
     const pid = formData.get("id");
 
-    await fetch(`/api/products/${pid}`, {
+    const response = await fetch(`/api/products/${pid}`, {
         method: "DELETE",
         body: formData,
     });
-    deleteForm.reset();
-    socket.emit("addProduct");
+    const data = await response.json();
+
+    const errorElement = document.getElementById("errorDelete");
+    if (response.status === 200 && data.status === "success") {
+        deleteForm.reset();
+        socket.emit("client:updateProduct");
+        errorElement.textContent = "";
+    } else if (data.status === "error") {
+        if (errorElement) {
+            errorElement.textContent = data.message;
+        }
+    }
 });

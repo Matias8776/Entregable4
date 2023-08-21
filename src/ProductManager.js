@@ -73,7 +73,6 @@ export default class ProductManager {
         await this.saveJson();
         result.success = true;
         result.product = product;
-        console.log(product);
         return result;
     };
 
